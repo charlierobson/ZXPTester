@@ -1,4 +1,6 @@
+#include "HardwareProfile.h"
 #include "interfacing.h"
+#include <compiler.h>
 
 unsigned int businessContRD(void)
 {

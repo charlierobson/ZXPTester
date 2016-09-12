@@ -32,6 +32,7 @@
 // Local includes
 #include "HardwareProfile.h"
 #include "debug.h"
+#include "interfacing.h"
 
 // Microchip Application Library includes
 // (expects V2.9a of the USB library from "Microchip Solutions v2011-07-14")
@@ -192,19 +193,12 @@ INT bulkSendExpectedPackets = 0;
 char debugString[64];
 
 // global pointer for multibyte operations
-int gAddress;
-int gLength;
+unsigned int gAddress;
+unsigned int gLength;
+unsigned int gAddressOffset;
 
 // function pointer to bulk reception processor
 void (*bulkFunction)(void) = NULL;
-
-extern void InitInterfacing(void);
-extern void ShiftOut(unsigned int address);
-
-extern void MemWrite(unsigned int address, unsigned char data);
-extern unsigned char MemRead(unsigned int address);
-extern void IOWrite(unsigned int address, unsigned char data);
-extern unsigned char IORead(unsigned int address);
 
 unsigned int blinkCounter;
 
@@ -231,7 +225,7 @@ void main(void)
 	// Initialise the debug log functions
     debugInitialise();
     
-	sprintf(debugString, "Genie Tickler by SirMorris");
+	sprintf(debugString, "ZXpandTester by SirMorris");
 	debugOut(debugString);
 
 	sprintf(debugString, "Based on work (C)2011 Simon Inns");
