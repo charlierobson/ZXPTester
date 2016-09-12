@@ -31,14 +31,17 @@ void MemWrite(unsigned int address, unsigned char data)
 {
 	ShiftOut(address);
 
-	TRISD = 0x00;
 	LATD = data;
+	TRISD = 0x00;
+	delayMicrosec();
 
 	NMREQ = 0;
 	NWR = 0;
 	delayMicrosec();
 	NWR = 1;
 	NMREQ = 1;
+
+	delayMicrosec();
 
 	TRISD = 0xFF;
 }
@@ -50,6 +53,7 @@ unsigned char MemRead(unsigned int address)
 	ShiftOut(address);
 
 	TRISD = 0xFF;
+	delayMicrosec();
 
 	NMREQ = 0;
 	NRD = 0;
@@ -57,6 +61,8 @@ unsigned char MemRead(unsigned int address)
 	data = PORTD;
 	NRD = 1;
 	NMREQ = 1;
+
+	delayMicrosec();
 
 	return data;
 }
@@ -68,12 +74,15 @@ void IOWrite(unsigned int address, unsigned char data)
 
 	TRISD = 0x00;
 	LATD = data;
+	delayMicrosec();
 
 	NIORQ = 0;
 	NWR = 0;
 	delayMicrosec();
 	NWR = 1;
 	NIORQ = 1;
+
+	delayMicrosec();
 
 	TRISD = 0xFF;
 }
@@ -85,6 +94,7 @@ unsigned char IORead(unsigned int address)
 	ShiftOut(address);
 
 	TRISD = 0xFF;
+	delayMicrosec();
 
 	NIORQ = 0;
 	NRD = 0;
@@ -92,6 +102,8 @@ unsigned char IORead(unsigned int address)
 	data = PORTD;
 	NRD = 1;
 	NIORQ = 1;
+
+	delayMicrosec();
 
 	return data;
 }
