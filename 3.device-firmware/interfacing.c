@@ -48,11 +48,13 @@ unsigned char MemRead(unsigned int address)
 	unsigned char data;
 
 	ShiftOut(address);
+	delayMicrosec();
+	delayMicrosec();
 
 	TRISD = 0xFF;
-
 	NMREQ = 0;
 	NRD = 0;
+	delayMicrosec();
 	delayMicrosec();
 	data = PORTD;
 	NRD = 1;

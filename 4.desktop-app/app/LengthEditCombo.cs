@@ -17,7 +17,7 @@ namespace USB_Generic_HID_reference_application
 		{
 			get
 			{
-                return Convert.ToInt32(Items[SelectedIndex]);
+                return int.Parse(Items[SelectedIndex].ToString().Substring(2), System.Globalization.NumberStyles.HexNumber|System.Globalization.NumberStyles.AllowHexSpecifier);
 			}
 		}
 	}
