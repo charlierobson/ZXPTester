@@ -39,3 +39,25 @@ unsigned int businessExerciseData()
 	PORTD++;
 	return VERY_BUSY;
 }
+
+int toggle = 0;
+
+unsigned int businessToggler()
+{
+	++toggle;
+	if (toggle & 1023 == 1023)
+	{
+		if (toggle & 2048)
+		{
+			ShiftOut(gAddress);
+			PORTD = gData;
+		}
+		else
+		{
+			ShiftOut(0);
+			PORTD = 0;
+		}
+	}
+
+	return VERY_BUSY;
+}

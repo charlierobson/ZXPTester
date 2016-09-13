@@ -204,7 +204,12 @@ namespace USB_Generic_HID_reference_application
 
         public bool LoopData()
         {
-			return SendCommand(0xE3);
+            return SendCommand(0xE3);
         }
-	}
+
+        public bool Toggler(int address, int data)
+        {
+            return SendCommand(0xE4, new int[] { address, data });
+        }
+    }
 }

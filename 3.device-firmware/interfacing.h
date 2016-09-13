@@ -22,6 +22,7 @@ extern unsigned char IORead(unsigned int address);
 #define delayMicrosec() Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();
 #define delayHalfMicrosec() Nop();Nop();Nop();Nop();Nop();Nop();
 
+extern unsigned char gData;
 extern unsigned int gAddress;
 extern unsigned int gLength;
 
