@@ -10,8 +10,8 @@ extern void IOWrite(unsigned int address, unsigned char data);
 extern unsigned char IORead(unsigned int address);
 
 
-#define SHIFTCLK LATBbits.LATB2
-#define SHIFTDAT LATBbits.LATB3
+#define SHIFTCLK LATBbits.LATB1
+#define SHIFTDAT LATBbits.LATB0
 
 #define NWR    LATBbits.LATB4
 #define NRD    LATBbits.LATB5
@@ -22,6 +22,7 @@ extern unsigned char IORead(unsigned int address);
 #define delayMicrosec() Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();
 #define delayHalfMicrosec() Nop();Nop();Nop();Nop();Nop();Nop();
 
+extern unsigned char gData;
 extern unsigned int gAddress;
 extern unsigned int gLength;
 

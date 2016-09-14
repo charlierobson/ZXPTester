@@ -107,7 +107,7 @@
   <ItemGroup>
     <ProjectReference Include="..\dll\dll.csproj">
       <Project>{C999B884-6EC3-4AB6-AEF5-AD4D7E1E4FA9}</Project>
-      <Name>usbGenericHidCommunications_3_0_0_0</Name>
+      <Name>dll</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

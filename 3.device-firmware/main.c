@@ -193,6 +193,7 @@ INT bulkSendExpectedPackets = 0;
 char debugString[64];
 
 // global pointer for multibyte operations
+unsigned char gData;
 unsigned int gAddress;
 unsigned int gLength;
 unsigned int gAddressOffset;
@@ -313,6 +314,7 @@ extern unsigned int businessContRD();
 extern unsigned int businessContWR();
 extern unsigned int businessExerciseAddr();
 extern unsigned int businessExerciseData();
+extern unsigned int businessToggler();
 
 
 // bulk handlers
@@ -555,6 +557,17 @@ void processUsbCommands(void)
 		            sprintf(debugString, "E3 Data exercise");
 					debugOut(debugString);
 					busyFn = businessExerciseData;
+					break;
+
+				case 0xE4:
+					InitInterfacing();
+					TRISD = 0x00;
+					gAddress = ((int)ReceivedDataBuffer[1] << 8) + ReceivedDataBuffer[2];
+					gData = ReceivedDataBuffer[4];
+
+		            sprintf(debugString, "E4 Rept Toggle %04x %02x", gAddress, gData);
+					debugOut(debugString);
+					busyFn = businessToggler;
 					break;
 
 				;

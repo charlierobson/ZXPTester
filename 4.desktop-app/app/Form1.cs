@@ -241,6 +241,11 @@ namespace USB_Generic_HID_reference_application
                 _theReferenceUsbDevice.LoopData();
             });
 
+            CreateCheckButton(flowLayoutPanelRadioChex, "Toggle", () =>
+            {
+                _theReferenceUsbDevice.Toggler(_addressEdit.Value, _dataEdit.Value);
+            });
+
             CreateButton(flowLayoutPanelRadioChex, "Block RD", ()=>
             {
                 var fillMe = new byte[_lengthEdit.Value];

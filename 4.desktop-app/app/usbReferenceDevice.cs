@@ -113,8 +113,6 @@ namespace USB_Generic_HID_reference_application
 		{
             _logger(string.Format("BlockRead: Data length {0} (${1:X4})", destinationByteArray.Length, destinationByteArray.Length));
 
-			for(int x = 0; x < destinationByteArray.Length; ++x) destinationByteArray[x]=(byte)x;
-			
 			var success = SendCommand(0x83, new int[]{ address, destinationByteArray.Length }); // - block read from genie
             if (success)
             {
@@ -128,7 +126,6 @@ namespace USB_Generic_HID_reference_application
 					packets[packet] = p;
 
                     success = readSingleReportFromDevice(ref p);
-            _logger(string.Format("Success: {0} byte[2] = ${1:X2}", success, p[2]));
                 }
 
 				var remaining = destinationByteArray.Length;
@@ -139,7 +136,7 @@ namespace USB_Generic_HID_reference_application
 					var length = (remaining > 63) ? 64 : remaining;
 					remaining -= length;
 					
-					Array.Copy(packets[packet], 0, destinationByteArray, offset, length);
+					Array.Copy(packets[packet], 1, destinationByteArray, offset, length);
 					offset += 64;
 				}
 			}
@@ -207,7 +204,12 @@ namespace USB_Generic_HID_reference_application
 
         public bool LoopData()
         {
-			return SendCommand(0xE3);
+            return SendCommand(0xE3);
         }
-	}
+
+        public bool Toggler(int address, int data)
+        {
+            return SendCommand(0xE4, new int[] { address, data });
+        }
+    }
 }
