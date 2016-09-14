@@ -95,8 +95,10 @@ namespace USB_Generic_HID_reference_application
         }
 
 		private readonly object _debugCollectorLock = new object();
-		
-		private string GetDebugString()
+        private ComboBox _fillTypeEdit;
+        private int _memFillType = 0;
+
+        private string GetDebugString()
 		{
 			lock(_debugCollectorLock)
 			{
@@ -153,7 +155,7 @@ namespace USB_Generic_HID_reference_application
 
         private void CreateButton(Control container, string buttonText, Action onClick)
         {
-            var button = new Button() { Text = buttonText, MinimumSize = new Size(64, 23), Size = new Size(64, 23), TextAlign = ContentAlignment.MiddleCenter };
+            var button = new Button() { Text = buttonText, MinimumSize = new Size(100, 23), Size = new Size(100, 23), TextAlign = ContentAlignment.MiddleCenter };
             button.Click += (sender, args) =>
             {
                 if (!_theReferenceUsbDevice.DeviceAttached)
@@ -207,6 +209,12 @@ namespace USB_Generic_HID_reference_application
             };
             panelMemParams.Controls.Add(_lengthEdit);
 
+            _fillTypeEdit = new ComboBox {Location = new Point(panelMemParams.Right - 118, _addressEdit.Bottom + 6), Width = 100};
+            _fillTypeEdit.Items.AddRange(new object[] {"Zeros", "FFs", "Addr & ff"});
+            _fillTypeEdit.SelectedIndex = 0;
+            _fillTypeEdit.SelectedIndexChanged += (o, args) => { _memFillType = _fillTypeEdit.SelectedIndex; };
+            panelMemParams.Controls.Add(_fillTypeEdit);
+
             CreateButton(flowLayoutPanelRadioChex, "RD", () =>
             {
                 byte data = 0xff;
@@ -246,7 +254,7 @@ namespace USB_Generic_HID_reference_application
                 _theReferenceUsbDevice.Toggler(_addressEdit.Value, _dataEdit.Value);
             });
 
-            CreateButton(flowLayoutPanelRadioChex, "Block RD", ()=>
+            CreateButton(flowLayoutPanelRadioChex, "Block RD", () =>
             {
                 var fillMe = new byte[_lengthEdit.Value];
 
@@ -254,10 +262,10 @@ namespace USB_Generic_HID_reference_application
 
                 LoadData(fillMe);
 
-				File.WriteAllBytes("dump.bin", fillMe);
+                File.WriteAllBytes("dump.bin", fillMe);
             });
 
-            CreateButton(flowLayoutPanelRadioChex, "Block WR", ()=>
+            CreateButton(flowLayoutPanelRadioChex, "Block WR", () =>
             {
                 if (_data.Length != 0)
                 {
@@ -269,8 +277,34 @@ namespace USB_Generic_HID_reference_application
                 }
             });
 
-			ResumeLayout();
+            CreateButton(flowLayoutPanelRadioChex, "Blk WR/Pat", () =>
+            {
+                var data = new byte[_lengthEdit.Value];
+                for (var i = 0; i < _lengthEdit.Value; ++i)
+                {
+                    data[i] = FillFunc(i);
+                }
+                LoadData(data);
+
+                _theReferenceUsbDevice.WriteBlock(_addressEdit.Value, data);
+            });
+
+            ResumeLayout();
 		}
+
+        private byte FillFunc(int i)
+        {
+            switch (_memFillType)
+            {
+                case 0:
+                    return 0;
+                case 1:
+                    return 0xFF;
+                case 2:
+                    return (byte)i;
+            }
+            return 0;
+        }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
 		{

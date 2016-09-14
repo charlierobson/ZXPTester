@@ -494,7 +494,7 @@ void processUsbCommands(void)
 	            case 0x84:  // IO WRITE
 				{
 					int address = ((int)ReceivedDataBuffer[1] << 8) + ReceivedDataBuffer[2];
-					unsigned char data = ReceivedDataBuffer[3];
+					unsigned char data = ReceivedDataBuffer[4];
 
 					IOWrite(address, data);
 
