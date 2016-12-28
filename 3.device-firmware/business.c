@@ -60,3 +60,69 @@ unsigned int businessToggler()
 
 	return VERY_BUSY;
 }
+
+
+unsigned int businessMemTest()
+{
+	BYTE patt = 1;
+	unsigned int addr;
+
+	for(addr = 0x4000; addr < 0xc000; ++addr, ++patt)
+	{
+		TRISD = 0x00;
+		ShiftOut(addr);
+		PORTD = patt;
+		NMREQ = 0;
+		NWR = 0;
+		delayMicrosec();
+		NWR = 1;
+		NMREQ = 1;
+
+		++patt;
+	}
+
+	for(addr = 0x4000; addr < 0xc000; ++addr, ++patt)
+	{
+		TRISD = 0xFF;
+		ShiftOut(addr);
+		NMREQ = 0;
+		NRD = 0;
+		delayMicrosec();
+		if (PORTD != patt)
+		{
+			//return addr;
+		}
+		NRD = 1;
+		NMREQ = 1;
+
+		TRISD = 0x00;
+		ShiftOut(addr);
+		PORTD = ~patt;
+		NMREQ = 0;
+		NWR = 0;
+		delayMicrosec();
+		NWR = 1;
+		NMREQ = 1;
+
+		++patt;
+	}
+
+	for(addr = 0x4000; addr < 0xc000; ++addr, ++patt)
+	{
+		TRISD = 0xFF;
+		ShiftOut(addr);
+		NMREQ = 0;
+		NRD = 0;
+		delayMicrosec();
+		if (PORTD != ~patt)
+		{
+			//return addr;
+		}
+		NRD = 1;
+		NMREQ = 1;
+
+		++patt;
+	}
+
+	return 0;	
+}

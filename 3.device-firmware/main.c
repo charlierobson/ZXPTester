@@ -315,6 +315,7 @@ extern unsigned int businessContWR();
 extern unsigned int businessExerciseAddr();
 extern unsigned int businessExerciseData();
 extern unsigned int businessToggler();
+extern unsigned int businessMemTest();
 
 
 // bulk handlers
@@ -344,6 +345,8 @@ void MemReadMultiple()
 		ToSendDataBuffer[i] = MemRead(gAddress);
 	}
 }
+
+unsigned int result;
 
 // Process USB commands
 void processUsbCommands(void)
@@ -568,6 +571,15 @@ void processUsbCommands(void)
 		            sprintf(debugString, "E4 Rept Toggle %04x %02x", gAddress, gData);
 					debugOut(debugString);
 					busyFn = businessToggler;
+					break;
+
+				case 0xE5:
+					InitInterfacing();
+		            sprintf(debugString, "E5 Mem Test");
+					debugOut(debugString);
+					result = businessMemTest();
+		            sprintf(debugString, " result: %d", result);
+					debugOut(debugString);
 					break;
 
 				;
