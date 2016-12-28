@@ -315,7 +315,7 @@ extern unsigned int businessContWR();
 extern unsigned int businessExerciseAddr();
 extern unsigned int businessExerciseData();
 extern unsigned int businessToggler();
-extern unsigned int businessMemTest();
+extern unsigned int businessMemTest(void);
 
 
 // bulk handlers

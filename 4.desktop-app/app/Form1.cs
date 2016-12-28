@@ -289,6 +289,11 @@ namespace USB_Generic_HID_reference_application
                 _theReferenceUsbDevice.WriteBlock(_addressEdit.Value, data);
             });
 
+            CreateButton(flowLayoutPanelRadioChex, "MemTest", () =>
+            {
+				_theReferenceUsbDevice.MemTest();
+            });
+
             ResumeLayout();
 		}
 

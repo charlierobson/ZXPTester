@@ -64,7 +64,7 @@ unsigned int businessToggler()
 
 unsigned int businessMemTest()
 {
-	BYTE patt = 1;
+	unsigned char patt = 1;
 	unsigned int addr;
 
 	for(addr = 0x4000; addr < 0xc000; ++addr, ++patt)

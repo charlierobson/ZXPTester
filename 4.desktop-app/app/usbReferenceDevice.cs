@@ -155,6 +155,11 @@ namespace USB_Generic_HID_reference_application
 			return SendCommand(0x80, new int[]{ address, data * 256 }) ; // - write to genie
         }
 
+        public bool MemTest()
+        {
+			return SendCommand(0xE5);
+        }
+
         public bool WriteBlock(int address, byte[] data)
         {
             _logger(string.Format("BlockWrite: Data length {0} (${1:X4})", data.Length, data.Length));
